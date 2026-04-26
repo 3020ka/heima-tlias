@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ascit.tlias.mapper.ReportMapper">
+    <select id="getEmpGenderData" resultType="com.ascit.tlias.entity.empGenderData">
+        select 
+            case when gender=1 then '男性员工'
+            when gender=2 then '女性员工'
+            end as name,
+            count(*) as value 
+        from emp
+        where gender is not null
+        group by gender
+    </select>
+    
+    <select id="getJobStats" resultType="java.util.Map">
+        SELECT job, COUNT(*) AS count 
+        FROM emp 
+        WHERE job IS NOT NULL 
+        GROUP BY job 
+        ORDER BY job
+    </select>
+    <select id="getStudentDegreeData" resultType="com.ascit.tlias.entity.empGenderData">
+        select 
+            case when degree=1 then '初中'
+            when degree=2 then '高中'
+            when degree=3 then '大专'
+            when degree=4 then '本科'
+            when degree=5 then '硕士'
+            end as name,
+            count(*) as value 
+        from student
+        where degree is not null
+        group by degree
+        order by degree
+    </select>
+    
+    <select id="getClazzStats" resultType="java.util.Map">
+        SELECT c.name AS clazzName, COUNT(*) AS count 
+        FROM student s 
+        LEFT JOIN clazz c ON s.clazz_id = c.id 
+        WHERE c.id IS NOT NULL 
+        GROUP BY c.id, c.name 
+        ORDER BY c.id
+    </select>
+
+</mapper>

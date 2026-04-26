@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ascit.tlias.mapper.StudentMapper">
+
+
+    <select id="getByCondition" resultType="com.ascit.tlias.entity.Student">
+        select s.*,c.name as clazzName from student s left join  clazz c on s.clazz_id=c.id
+        <where>
+            <if test="studentDTO.getName()!=null and studentDTO.getName()!=''">
+            and s.name like concat('%',#{studentDTO.getName()},'%')
+
+        </if>
+            <if test="studentDTO.getDegree()!=null ">
+                and s.degree=#{studentDTO.getDegree()}
+
+            </if>
+            <if test="studentDTO.getClazzId()!=null ">
+                and s.clazz_id=#{studentDTO.getDegree()}
+            </if>
+        </where>
+    </select>
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ascit.tlias.mapper.EmpMapper">
+
+    <!-- useGeneratedKeys="true" 表示获取自动生成的 id -->
+    <!-- keyProperty="id" 表示把 id 填入 emp 对象的 id 属性 -->
+    <insert id="addEmp" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO emp (username, password, name, gender, phone, job, salary, image, entry_date, dept_id, create_time, update_time)
+        VALUES (#{username}, #{password}, #{name}, #{gender}, #{phone}, #{job}, #{salary}, #{image}, #{entryDate}, #{deptId}, #{createTime}, #{updateTime})
+    </insert>
+
+    <select id="getEmpsByPage" resultType="com.ascit.tlias.entity.Emp">
+        SELECT e.*, d.name AS deptName FROM emp e LEFT JOIN dept d ON e.dept_id = d.id
+        <where>
+            <if test="queryString.name != null and queryString.name != ''">
+                AND e.name LIKE CONCAT('%', #{queryString.name}, '%')
+            </if>
+            <if test="queryString.gender != null">
+                AND e.gender = #{queryString.gender}
+            </if>
+            <if test="queryString.begin != null">
+                AND e.entry_date &gt;= #{queryString.begin}
+            </if>
+            <if test="queryString.end != null">
+                AND e.entry_date &lt;= #{queryString.end}
+            </if>
+        </where>
+    </select>
+
+</mapper>
